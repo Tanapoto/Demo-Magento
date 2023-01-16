@@ -1,5 +1,0 @@
-org.testng.internal.reflect.MethodMatcherException: 
-[public void TestCase.AccountTest.loginSuccessfully()] has no parameters defined but was found to be using a data provider (either explicitly specified or inherited from class level annotation).
-Data provider mismatch
-Method: loginSuccessfully([])
-Arguments: [(java.util.Hashtable) {EXPECTED_URL=https://magento-demo.mageplaza.com/, TESTCASEID=loginSuccessfully, SIGNIN_PAGE_URL=https://magento-demo.mageplaza.com/customer/account/login/referer/aHR0cHM6Ly9tYWdlbnRvLWRlbW8ubWFnZXBsYXphLmNvbS9jdXN0b21lci9hY2NvdW50L2xvZ291dFN1Y2Nlc3Mv/, USERNAME=roni_cost@example.com, PASSWORD=roni_cost3@example.com}]

@@ -1,1 +1,0 @@
-java.lang.AssertionError: The element does NOT present. Expected condition failed: waiting for presence of element located by: By.xpath: //div[@class='message-error error message'] (tried for 15 second(s) with 500 milliseconds interval)
