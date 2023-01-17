@@ -16,6 +16,8 @@ public class AccountModal {
     public static String confirmPassword = "CONFIRM_PASSWORD";
     public static String signUpPageUrl = "SIGNUP_PAGE_URL";
     public static String accountUrl = "ACCOUNT_URL";
+    public static String editContactInfoUrl = "EDIT_CONTACT_INFOR_URL";
+
 
     public static String getFirstName() {
         return firstName;
@@ -48,5 +50,10 @@ public class AccountModal {
     public static String getSignOutPageUrl() {
         return signOutPageUrl;
     }
+    public static String getEditContactInfoUrl() {
+        return editContactInfoUrl;
+    }
+
+
 
 }

@@ -521,6 +521,11 @@ public class WebUI {
         return DriverManager.getDriver().getCurrentUrl().equals(pageUrl.trim());
     }
 
+    public static boolean verifyPageUrlContain(String pageUrl) {
+        smartWait();
+        Log.info("Current URL: " + DriverManager.getDriver().getCurrentUrl());
+        return DriverManager.getDriver().getCurrentUrl().contains(pageUrl.trim());
+    }
     //Handle checkbox and radio button
     public static boolean verifyElementSelected(By by) {
         smartWait();
