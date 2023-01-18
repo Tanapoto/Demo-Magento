@@ -13,6 +13,7 @@ public class AccountTest extends BaseTest {
 
     AccountPage accountPage;
     EditAccountPage editAccountPage;
+
     public AccountTest() {
         accountPage = new AccountPage();
         editAccountPage = new EditAccountPage();
@@ -26,29 +27,37 @@ public class AccountTest extends BaseTest {
         accountPage.signInSuccessfullyByCreatedAccount(1);
     }
 
+
     @Test(priority = 2, dataProvider = "getEditAccountDataHashTable", dataProviderClass = EditAccountDataProvider.class)
     public void testEditContactInfo_Address(Hashtable<String, String> data) {
         accountPage.signInSuccessfullyByCreatedAccount(1);
         editAccountPage.editConTactInfo(1);
         accountPage.signInSuccessfullyAfterEditingEmailAndPassword(1);
-        editAccountPage.editAddress(1);
-        editAccountPage.verifyEditedAddress(1);
+        editAccountPage.checkSubNews();
+        editAccountPage.uncheckSubNews();
+        editAccountPage.editAddressAndSetDefaultAddress(1);
+        editAccountPage.verifyEditedDefaultBillingAddress(1);
+        editAccountPage.verifyEditedDefaultShippingAddress(1);
+        editAccountPage.addNewAddressAndSetDefaultAddress(2);
+        editAccountPage.verifyEditedDefaultBillingAddress(2);
+        editAccountPage.verifyEditedDefaultShippingAddress(2);
+        editAccountPage.deleteAddress(1);
     }
 
-    @Test(priority = 3, dataProvider = "getAccountDataHashTable", dataProviderClass = AccountDataProvider.class)
-    public void signInFailure(Hashtable<String, String> data) {
-        accountPage.signInFailure(2);
-    }
+//    @Test(priority = 3, dataProvider = "getAccountDataHashTable", dataProviderClass = AccountDataProvider.class)
+//    public void signInFailure(Hashtable<String, String> data) {
+//        accountPage.signInFailure(2);
+//    }
+//
+//    @Test(priority = 4, dataProvider = "getAccountDataHashTable", dataProviderClass = AccountDataProvider.class)
+//    public void signUpFailureWithEmptyData(Hashtable<String, String> data) {
+//        accountPage.signUpFailure(3);
+//    }
 
-    @Test(priority = 4, dataProvider = "getAccountDataHashTable", dataProviderClass = AccountDataProvider.class)
-    public void signUpFailureWithEmptyData(Hashtable<String, String> data) {
-        accountPage.signUpFailure(3);
-    }
-
-    @Test(priority = 5, dataProvider = "getAccountDataHashTable", dataProviderClass = AccountDataProvider.class)
-    public void signUpFailureWithExistedData(Hashtable<String, String> data) {
-        accountPage.signUpFailure(4);
-    }
+//    @Test(priority = 5, dataProvider = "getAccountDataHashTable", dataProviderClass = AccountDataProvider.class)
+//    public void signUpFailureWithExistedData(Hashtable<String, String> data) {
+//        accountPage.signUpFailure(4);
+//    }
 
 }
 

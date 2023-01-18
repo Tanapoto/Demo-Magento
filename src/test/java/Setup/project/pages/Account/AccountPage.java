@@ -116,8 +116,6 @@ public class AccountPage {
         WebUI.clickElement(btnSignIn);
         WebUI.waitForPageLoaded();
         Assert.assertFalse(WebUI.verifyElementExists(alertErrorMessLogin));
-
-        System.out.println("AAAL: " + excelHelpers.getCellData(numRow, EditAccountModal.getUrlHomePage()));
         Assert.assertTrue(WebUI.verifyPageUrl(excelHelpers.getCellData(numRow, EditAccountModal.getUrlHomePage())));
         return new HomePage();
     }

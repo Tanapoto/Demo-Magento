@@ -25,6 +25,12 @@ public class EditAccountModal {
     public static String urlSignIn = "URL_SIGN_IN";
     public static String urlEditAddress = "URL_EDIT_ADDRESS";
     public static String urlAddressBook = "URL_ADDRESS_BOOK";
+    public static String urlEditSub = "URL_EDIT_SUB";
+    public static String urlManageAddress = "URL_MANAGE_ADDRESS";
+    public static String urlAddAddress = "URL_ADD_ADDRESS";
+
+
+
 
 
 
@@ -90,6 +96,15 @@ public class EditAccountModal {
     }
     public static String getUrlAddressBook() {
         return urlAddressBook;
+    }
+    public static String getUrlEditSub() {
+        return urlEditSub;
+    }
+    public static String getUrlManageAddress() {
+        return urlManageAddress;
+    }
+    public static String getUrlAddAddress() {
+        return urlAddAddress;
     }
 
 

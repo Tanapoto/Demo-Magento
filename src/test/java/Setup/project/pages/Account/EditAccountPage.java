@@ -16,6 +16,7 @@ public class EditAccountPage {
     public By btnOpenEditContact = ObjectUtils.getByLocatorFromConfig("btnOpenEditContact");
     public By btnOpenChangePass = ObjectUtils.getByLocatorFromConfig("btnOpenChangePass");
     public By btnOpenSignUp = ObjectUtils.getByLocatorFromConfig("btnOpenSignUp");
+    public By btnOpenEditAddress = ObjectUtils.getByLocatorFromConfig("btnOpenEditAddress");
     public By btnOpenAddAddress = ObjectUtils.getByLocatorFromConfig("btnOpenAddAddress");
     public By editFirstName = ObjectUtils.getByLocatorFromConfig("editFirstName");
     public By editLastName = ObjectUtils.getByLocatorFromConfig("editLastName");
@@ -38,7 +39,24 @@ public class EditAccountPage {
     public By editCity = ObjectUtils.getByLocatorFromConfig("editCity");
     public By editZipcode = ObjectUtils.getByLocatorFromConfig("editZipcode");
     public By editSaveAddress = ObjectUtils.getByLocatorFromConfig("editSaveAddress");
-    public By editedAddress = ObjectUtils.getByLocatorFromConfig("editedAddress");
+    public By defaultBillingAddress = ObjectUtils.getByLocatorFromConfig("defaultBillingAddress");
+    public By defaultShippingAddress = ObjectUtils.getByLocatorFromConfig("defaultShippingAddress");
+
+    public By btnOpenNewsSub = ObjectUtils.getByLocatorFromConfig("btnOpenNewsSub");
+    public By isSubContent = ObjectUtils.getByLocatorFromConfig("isSubContent");
+    public By btnSubNews = ObjectUtils.getByLocatorFromConfig("btnSubNews");
+    public By btnSaveSub = ObjectUtils.getByLocatorFromConfig("btnSaveSub");
+    public By btnOpenManageAddress = ObjectUtils.getByLocatorFromConfig("btnOpenManageAddress");
+    public By btnDeleteAddress = ObjectUtils.getByLocatorFromConfig("btnDeleteAddress");
+    public By btnEditAddress = ObjectUtils.getByLocatorFromConfig("btnEditAddress");
+    public By modalConfirmDelete = ObjectUtils.getByLocatorFromConfig("modalConfirmDelete");
+    public By btnCancelDelete = ObjectUtils.getByLocatorFromConfig("btnCancelDelete");
+    public By btnConfirmDelete = ObjectUtils.getByLocatorFromConfig("btnConfirmDelete");
+    public By messDeleteSuccessfully = ObjectUtils.getByLocatorFromConfig("messDeleteSuccessfully");
+    public By setDefaultBillingAddress = ObjectUtils.getByLocatorFromConfig("setDefaultBillingAddress");
+    public By setDefaultShippingAddress = ObjectUtils.getByLocatorFromConfig("setDefaultShippingAddress");
+    public By countNumberAddress = ObjectUtils.getByLocatorFromConfig("countNumberAddress");
+
 
     ExcelHelpers excelHelpers;
     public EditAccountPage() {
@@ -55,7 +73,6 @@ public class EditAccountPage {
         Assert.assertTrue(WebUI.verifyElementAttributeValue(editEmailSignUp,"value",excelHelpers.getCellData(1,AccountModal.getEmail())));
         return new AccountPage();
     }
-
     public AccountPage editConTactInfo(int numRow) {
         excelHelpers.setExcelFile(FrameworkConstants.EXCEL_DATA_FILE_PATH, "Edit_Account");
         WebUI.clickElement(customerMenu);
@@ -113,12 +130,40 @@ public class EditAccountPage {
         Assert.assertTrue(WebUI.verifyPageUrl(excelHelpers.getCellData(1,EditAccountModal.getUrlSignIn())));
         return new AccountPage();
     }
-
-    public AccountPage editAddress(int numRow) {
+    public AccountPage checkSubNews() {
         excelHelpers.setExcelFile(FrameworkConstants.EXCEL_DATA_FILE_PATH, "Edit_Account");
         WebUI.clickElement(customerMenu);
         WebUI.clickElement(btnMyAccount);
-        WebUI.clickElement(btnOpenAddAddress);
+        WebUI.clickElement(btnOpenNewsSub);
+        Assert.assertTrue(WebUI.verifyPageUrlContain(excelHelpers.getCellData(1, EditAccountModal.getUrlEditSub())));
+
+        Assert.assertFalse(WebUI.verifyElementSelected(btnSubNews));
+        WebUI.clickElement(btnSubNews);
+        Assert.assertTrue(WebUI.verifyElementSelected(btnSubNews));
+        WebUI.clickElement(btnSubNews);
+        Assert.assertFalse(WebUI.verifyElementSelected(btnSubNews));
+        WebUI.clickElement(btnSubNews);
+        WebUI.clickElement(btnSaveSub);
+        Assert.assertTrue(WebUI.verifyElementTextContains(isSubContent,"are subscribed"));
+        return new AccountPage();
+    }
+    public AccountPage uncheckSubNews() {
+        excelHelpers.setExcelFile(FrameworkConstants.EXCEL_DATA_FILE_PATH, "Edit_Account");
+        WebUI.clickElement(btnOpenNewsSub);
+        Assert.assertTrue(WebUI.verifyPageUrlContain(excelHelpers.getCellData(1, EditAccountModal.getUrlEditSub())));
+
+        Assert.assertTrue(WebUI.verifyElementSelected(btnSubNews));
+        WebUI.clickElement(btnSubNews);
+        Assert.assertFalse(WebUI.verifyElementSelected(btnSubNews));
+        WebUI.clickElement(btnSaveSub);
+        Assert.assertTrue(WebUI.verifyElementTextContains(isSubContent,"aren't subscribed"));
+        return new AccountPage();
+    }
+    public AccountPage editAddressAndSetDefaultAddress(int numRow) {
+        excelHelpers.setExcelFile(FrameworkConstants.EXCEL_DATA_FILE_PATH, "Edit_Account");
+        WebUI.clickElement(customerMenu);
+        WebUI.clickElement(btnMyAccount);
+        WebUI.clickElement(btnOpenEditAddress);
         Assert.assertTrue(WebUI.verifyPageUrlContain(excelHelpers.getCellData(1, EditAccountModal.getUrlEditAddress())));
 
         WebUI.clearText(editCompany);
@@ -161,21 +206,107 @@ public class EditAccountPage {
 
        return new AccountPage();
     }
-
-    public AccountPage verifyEditedAddress(int numRow) {
+    public AccountPage addNewAddressAndSetDefaultAddress(int numRow) {
         excelHelpers.setExcelFile(FrameworkConstants.EXCEL_DATA_FILE_PATH, "Edit_Account");
-        Assert.assertTrue(WebUI.verifyElementTextContains(editedAddress,excelHelpers.getCellData(1,EditAccountModal.getEditFirstName())));
-        Assert.assertTrue(WebUI.verifyElementTextContains(editedAddress,excelHelpers.getCellData(1,EditAccountModal.getEditLastName())));
-        Assert.assertTrue(WebUI.verifyElementTextContains(editedAddress,excelHelpers.getCellData(1,EditAccountModal.getEditCompany())));
-        Assert.assertTrue(WebUI.verifyElementTextContains(editedAddress,excelHelpers.getCellData(1,EditAccountModal.getEditStress1())));
-        Assert.assertTrue(WebUI.verifyElementTextContains(editedAddress,excelHelpers.getCellData(1,EditAccountModal.getEditPhoneNumber())));
-        Assert.assertTrue(WebUI.verifyElementTextContains(editedAddress,excelHelpers.getCellData(1,EditAccountModal.getEditStress1())));
-        Assert.assertTrue(WebUI.verifyElementTextContains(editedAddress,excelHelpers.getCellData(1,EditAccountModal.getEditStress2())));
-        Assert.assertTrue(WebUI.verifyElementTextContains(editedAddress,excelHelpers.getCellData(1,EditAccountModal.getEditStress3())));
-        Assert.assertTrue(WebUI.verifyElementTextContains(editedAddress,excelHelpers.getCellData(1,EditAccountModal.getEditProvince())));
-        Assert.assertTrue(WebUI.verifyElementTextContains(editedAddress,excelHelpers.getCellData(1,EditAccountModal.getEditCity())));
-        Assert.assertTrue(WebUI.verifyElementTextContains(editedAddress,excelHelpers.getCellData(1,EditAccountModal.getEditZipCode())));
+
+        WebUI.clickElement(customerMenu);
+        WebUI.clickElement(btnMyAccount);
+        WebUI.clickElement(btnOpenManageAddress);
+        WebUI.clickElement(btnOpenAddAddress);
+        Assert.assertTrue(WebUI.verifyPageUrlContain(excelHelpers.getCellData(numRow, EditAccountModal.getUrlAddAddress())));
+
+        WebUI.clearText(editCompany);
+        WebUI.setText(editCompany,excelHelpers.getCellData(numRow,EditAccountModal.getEditCompany()));
+
+        WebUI.clearText(editPhoneNumber);
+        Assert.assertTrue(WebUI.verifyElementAttributeValue(editPhoneNumber,"aria-required","true"));
+        WebUI.setText(editPhoneNumber,excelHelpers.getCellData(numRow,EditAccountModal.getEditPhoneNumber()));
+
+        WebUI.clearText(editStressAddress1);
+        Assert.assertTrue(WebUI.verifyElementAttributeValue(editStressAddress1,"aria-required","true"));
+        WebUI.setText(editStressAddress1,excelHelpers.getCellData(numRow,EditAccountModal.getEditStress1()));
+
+        WebUI.clearText(editStressAddress2);
+        Assert.assertTrue(WebUI.verifyElementAttributeValue(editStressAddress2,"aria-required","true"));
+        WebUI.setText(editStressAddress2,excelHelpers.getCellData(numRow,EditAccountModal.getEditStress2()));
+
+        WebUI.clearText(editStressAddress3);
+        Assert.assertTrue(WebUI.verifyElementAttributeValue(editStressAddress3,"aria-required","true"));
+        WebUI.setText(editStressAddress3,excelHelpers.getCellData(numRow,EditAccountModal.getEditStress3()));
+
+        WebUI.selectOptionByText(editCountry,"Benin");
+        WebUI.selectOptionByText(editCountry,"Cyprus");
+        WebUI.selectOptionByText(editCountry,"Turkmenistan");
+
+        WebUI.clearText(editProvince);
+        WebUI.setText(editProvince,excelHelpers.getCellData(numRow,EditAccountModal.getEditProvince()));
+
+        WebUI.clearText(editCity);
+        Assert.assertTrue(WebUI.verifyElementAttributeValue(editCity,"aria-required","true"));
+        WebUI.setText(editCity,excelHelpers.getCellData(numRow,EditAccountModal.getEditCity()));
+
+        WebUI.clearText(editZipcode);
+        Assert.assertTrue(WebUI.verifyElementAttributeValue(editZipcode,"aria-required","true"));
+        WebUI.setText(editZipcode,excelHelpers.getCellData(numRow,EditAccountModal.getEditZipCode()));
+
+        Assert.assertFalse(WebUI.verifyElementSelected(setDefaultBillingAddress));
+        WebUI.clickElement(setDefaultBillingAddress);
+        Assert.assertTrue(WebUI.verifyElementSelected(setDefaultBillingAddress));
+        Assert.assertFalse(WebUI.verifyElementSelected(setDefaultShippingAddress));
+        WebUI.clickElement(setDefaultShippingAddress);
+        Assert.assertTrue(WebUI.verifyElementSelected(setDefaultShippingAddress));
+
+        WebUI.clickElement(editSaveAddress);
+        Assert.assertTrue(WebUI.verifyElementExists(savingEditAccountContents));
+        Assert.assertTrue(WebUI.verifyPageUrl(excelHelpers.getCellData(numRow,EditAccountModal.getUrlAddressBook())));
+
         return new AccountPage();
     }
+    public AccountPage verifyEditedDefaultBillingAddress(int numRow) {
+        excelHelpers.setExcelFile(FrameworkConstants.EXCEL_DATA_FILE_PATH, "Edit_Account");
 
+       Assert.assertTrue(WebUI.verifyElementTextContains(defaultBillingAddress,excelHelpers.getCellData(numRow,EditAccountModal.getEditCompany())));
+        Assert.assertTrue(WebUI.verifyElementTextContains(defaultBillingAddress,excelHelpers.getCellData(numRow,EditAccountModal.getEditStress1())));
+        Assert.assertTrue(WebUI.verifyElementTextContains(defaultBillingAddress,excelHelpers.getCellData(numRow,EditAccountModal.getEditPhoneNumber())));
+        Assert.assertTrue(WebUI.verifyElementTextContains(defaultBillingAddress,excelHelpers.getCellData(numRow,EditAccountModal.getEditStress1())));
+        Assert.assertTrue(WebUI.verifyElementTextContains(defaultBillingAddress,excelHelpers.getCellData(numRow,EditAccountModal.getEditStress2())));
+        Assert.assertTrue(WebUI.verifyElementTextContains(defaultBillingAddress,excelHelpers.getCellData(numRow,EditAccountModal.getEditStress3())));
+        Assert.assertTrue(WebUI.verifyElementTextContains(defaultBillingAddress,excelHelpers.getCellData(numRow,EditAccountModal.getEditProvince())));
+        Assert.assertTrue(WebUI.verifyElementTextContains(defaultBillingAddress,excelHelpers.getCellData(numRow,EditAccountModal.getEditCity())));
+        Assert.assertTrue(WebUI.verifyElementTextContains(defaultBillingAddress,excelHelpers.getCellData(numRow,EditAccountModal.getEditZipCode())));
+        return new AccountPage();
+    }
+    public AccountPage verifyEditedDefaultShippingAddress(int numRow) {
+        excelHelpers.setExcelFile(FrameworkConstants.EXCEL_DATA_FILE_PATH, "Edit_Account");
+
+       Assert.assertTrue(WebUI.verifyElementTextContains(defaultShippingAddress,excelHelpers.getCellData(numRow,EditAccountModal.getEditCompany())));
+        Assert.assertTrue(WebUI.verifyElementTextContains(defaultShippingAddress,excelHelpers.getCellData(numRow,EditAccountModal.getEditStress1())));
+        Assert.assertTrue(WebUI.verifyElementTextContains(defaultShippingAddress,excelHelpers.getCellData(numRow,EditAccountModal.getEditPhoneNumber())));
+        Assert.assertTrue(WebUI.verifyElementTextContains(defaultShippingAddress,excelHelpers.getCellData(numRow,EditAccountModal.getEditStress1())));
+        Assert.assertTrue(WebUI.verifyElementTextContains(defaultShippingAddress,excelHelpers.getCellData(numRow,EditAccountModal.getEditStress2())));
+        Assert.assertTrue(WebUI.verifyElementTextContains(defaultShippingAddress,excelHelpers.getCellData(numRow,EditAccountModal.getEditStress3())));
+        Assert.assertTrue(WebUI.verifyElementTextContains(defaultShippingAddress,excelHelpers.getCellData(numRow,EditAccountModal.getEditProvince())));
+        Assert.assertTrue(WebUI.verifyElementTextContains(defaultShippingAddress,excelHelpers.getCellData(numRow,EditAccountModal.getEditCity())));
+        Assert.assertTrue(WebUI.verifyElementTextContains(defaultShippingAddress,excelHelpers.getCellData(numRow,EditAccountModal.getEditZipCode())));
+        return new AccountPage();
+    }
+    public AccountPage deleteAddress(int numRow) {
+        excelHelpers.setExcelFile(FrameworkConstants.EXCEL_DATA_FILE_PATH, "Edit_Account");
+        WebUI.clickElement(customerMenu);
+        WebUI.clickElement(btnMyAccount );
+        WebUI.clickElement(btnOpenManageAddress);
+        Assert.assertTrue(WebUI.verifyPageUrl(excelHelpers.getCellData(numRow,EditAccountModal.getUrlManageAddress())));
+        Assert.assertTrue(WebUI.verifyElementExists(countNumberAddress));
+
+        WebUI.clickElement(btnDeleteAddress);
+        Assert.assertTrue(WebUI.verifyElementExists(modalConfirmDelete));
+        WebUI.clickElement(btnCancelDelete);
+        Assert.assertFalse(WebUI.verifyElementExists(modalConfirmDelete));
+        WebUI.clickElement(btnDeleteAddress);
+        Assert.assertTrue(WebUI.verifyElementExists(modalConfirmDelete));
+        WebUI.clickElement(btnConfirmDelete);
+        Assert.assertTrue(WebUI.verifyElementExists(messDeleteSuccessfully));
+
+        return new AccountPage();
+    }
 }
