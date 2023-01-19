@@ -19,8 +19,6 @@ public final class EditAccountDataProvider {
 
         System.out.println("AccountData.FirstName = " + data.get(AccountModal.getFirstName()));
 
-
-
     }
 
     

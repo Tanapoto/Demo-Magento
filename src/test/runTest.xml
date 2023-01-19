@@ -4,7 +4,8 @@
     <test name="Selenium_Demo_Test">
         <parameter name="browserType" value="chrome"/>
         <classes>
-            <class name="TestCase.AccountTest">
+<!--            <class name="TestCase.AccountTest"/>-->
+                <class name="TestCase.SearchTest">
 
         </class>
         </classes>

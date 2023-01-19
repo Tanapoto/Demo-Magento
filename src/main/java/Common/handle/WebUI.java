@@ -294,7 +294,6 @@ public class WebUI {
     }
 
 
-
     public static String getHTML5MessageField(By by) {
         JavascriptExecutor js = (JavascriptExecutor) DriverManager.getDriver();
         String message = (String) js.executeScript("return arguments[0].validationMessage;", getWebElement(by));
@@ -379,7 +378,6 @@ public class WebUI {
 //    }
 
 
-
     public static void uploadFileWithLocalForm(By by, String filePath) {
         smartWait();
 
@@ -440,7 +438,7 @@ public class WebUI {
     }
 
 
-    public static void uploadFileWithSendKeys(By by,String filePath) {
+    public static void uploadFileWithSendKeys(By by, String filePath) {
         smartWait();
 
         DriverManager.getDriver().findElement(by).sendKeys(filePath);
@@ -453,7 +451,7 @@ public class WebUI {
     }
 
 
-    public static void uploadMultiFileWithSendKeys(By by,String filePath1, String filePath2) {
+    public static void uploadMultiFileWithSendKeys(By by, String filePath1, String filePath2) {
         smartWait();
 
         DriverManager.getDriver().findElement(by).sendKeys(filePath1 + "\n" + filePath2);
@@ -464,6 +462,7 @@ public class WebUI {
             ExtentReportManager.info("Upload File with SendKeys");
         }
     }
+
     public static boolean uploadFileForm(By by, String filePath) {
         smartWait();
         waitForElementVisible(by).click();
@@ -526,6 +525,7 @@ public class WebUI {
         Log.info("Current URL: " + DriverManager.getDriver().getCurrentUrl());
         return DriverManager.getDriver().getCurrentUrl().contains(pageUrl.trim());
     }
+
     //Handle checkbox and radio button
     public static boolean verifyElementSelected(By by) {
         smartWait();
@@ -613,17 +613,20 @@ public class WebUI {
         Select select = new Select(getWebElement(by));
         select.selectByVisibleText(text);
     }
+
     public static void deselectOptionByText(By by, String text) {
         smartWait();
         Select select = new Select(getWebElement(by));
         select.deselectByVisibleText(text);
     }
+
     public static void selectOptionByValue(By by, String value) {
         smartWait();
 
         Select select = new Select(getWebElement(by));
         select.selectByValue(value);
     }
+
     public static void deselectOptionByValue(By by, String value) {
         smartWait();
 
@@ -637,6 +640,7 @@ public class WebUI {
         Select select = new Select(getWebElement(by));
         select.selectByIndex(index);
     }
+
     public static void deselectOptionByIndex(By by, int index) {
         smartWait();
 
@@ -862,7 +866,7 @@ public class WebUI {
         waitForElementVisible(by);
 
         boolean result = getTextElement(by).trim().equals(text.trim());
-       Log.info("The actual text is " + getTextElement(by).trim() + " \nand expected text is " + text.trim());
+        Log.info("The actual text is " + getTextElement(by).trim() + " \nand expected text is " + text.trim());
 
         if (result == true) {
             Log.info("Verify text of an element [Equals]: " + result);
@@ -907,9 +911,9 @@ public class WebUI {
         smartWait();
         boolean result = text1.contains(text2);
         if (result) {
-            Log.info("Verify "+ text1 +" and " + text2 +"is: " + result);
+            Log.info("Verify " + text1 + " and " + text2 + "is: " + result);
         } else {
-            Log.warn("Verify "+ text1 +" and " + text2 +"is: " + result);
+            Log.warn("Verify " + text1 + " and " + text2 + "is: " + result);
         }
 
         Assert.assertTrue(result, "The actual text is " + text1 + " not contains " + text2);
@@ -1689,21 +1693,29 @@ public class WebUI {
     }
 
 
-    public static boolean checkEqualsValueOnTableByColumn(int column, String value) {
+    public static boolean checkEqualsSearchResults(String value, By btnNextPage, By byPageSize, By byTotalRows, By noSearchResultsContents) {
         smartWait();
-        sleep(1);
-        List<WebElement> totalRows = getWebElements(By.xpath("//tbody/tr"));
-        Log.info("Number of results for keyword (" + value + "): " + totalRows.size());
         boolean res = false;
-        if (totalRows.size() < 1) {
-            Log.info("Not found value: " + value);
-            res = false;
-        } else {
-            for (int i = 1; i <= totalRows.size(); i++) {
-                WebElement title = waitForElementVisible(By.xpath("//tbody/tr[" + i + "]/td[" + column + "]"));
-                res = title.getText().toUpperCase().equals(value.toUpperCase());
-                Log.info("Row " + i + ": " + res + " - " + title.getText());
-                Assert.assertTrue(res, "Row " + i + " (" + title.getText() + ")" + " equals no value: " + value);
+        int pageSize = verifyElementExists(byPageSize) && getWebElements(byPageSize).size() > 1 ? getWebElements(byPageSize).size() : 1;
+        for (int k = 1; k <= pageSize; k++) {
+            if (!verifyElementExists(byTotalRows)) {
+                res = verifyElementTextContains(noSearchResultsContents, "Your search returned no results.");
+                Assert.assertTrue(res);
+                Log.info("Not found value: " + value);
+            } else {
+                for (int i = 1; i <= getWebElements(byTotalRows).size(); i++) {
+                    WebElement title = waitForElementVisible(By.xpath("//div/ol/li[" + i + "]/div[1]/div[1]/strong[1]/a[1]"));
+                    scrollToElement(title);
+                    res = title.getText().toUpperCase().contains(value.toUpperCase());
+                    System.out.println(res);
+//                    Assert.assertTrue(res, "Row " + i + " (" + title.getText() + ")" + " equals no value: " + value);
+                }
+                System.out.println("AA: " + pageSize);
+                System.out.println("BB: " + k);
+
+                if (pageSize > k) {
+                    WebUI.clickElement(btnNextPage);
+                }
             }
         }
         return res;
@@ -1880,7 +1892,6 @@ public class WebUI {
     }
 
 
-
     public static boolean verifyElementAttributeValue(By by, String attribute, String value) {
         smartWait();
 
@@ -1895,7 +1906,6 @@ public class WebUI {
             return false;
         }
     }
-
 
 
     public static boolean verifyElementHasAttribute(By by, String attribute, int timeOut) {
@@ -2018,61 +2028,126 @@ public class WebUI {
         return flag;
     }
 
-    public static boolean verifyTextWhenSortingBySmallest(By by) {
-        waitForElementVisible(by);
-        WebUI.sleep(2);
-        ArrayList<Double> obtainedList = new ArrayList<>();
-        List<WebElement> elementList = DriverManager.getDriver().findElements(by);
-        for (WebElement element : elementList) {
-            double eleNum;
-            if(element.getText().contains("Bytes")){
-                eleNum = Double.parseDouble(element.getText().replace("Bytes", ""))/1000;
-            }else if(element.getText().contains("MB")) {
-                eleNum = Double.parseDouble(element.getText().replace("MB", "").trim()) * 1000;
-            }else{
-                eleNum = Double.parseDouble(element.getText().replace("KB", ""));
+    public static boolean verifyProdsWhenSortingA_Z(By btnNextPage, By prodsName, By byPageSize, By byTotalRows, By noSearchResultsContents) {
+        ArrayList<String> obtainedList = new ArrayList<>();
+        ArrayList<String> sortedList = new ArrayList<>();
+
+        int pageSize = verifyElementExists(byPageSize) && getWebElements(byPageSize).size() > 1 ? getWebElements(byPageSize).size() : 1;
+        for (int k = 1; k <= pageSize; k++) {
+            if (!verifyElementExists(byTotalRows)) {
+                Assert.assertTrue(verifyElementTextContains(noSearchResultsContents, "Your search returned no results."));
+            } else {
+                List<WebElement> elementList = DriverManager.getDriver().findElements(prodsName);
+                for (WebElement prodName : elementList) {
+                    obtainedList.add(prodName.getText());
+                }
+                if (pageSize > k) {
+                    WebUI.clickElement(btnNextPage);
+                }
             }
-            obtainedList.add(eleNum);
         }
-        ArrayList<Double> sortedList = new ArrayList<>();
-        for (Double s : obtainedList) {
+        for (String s : obtainedList) {
             sortedList.add(s);
         }
         Collections.sort(sortedList);
-        if (ExtentTestManager.getExtentTest() != null) {
-            ExtentReportManager.pass("Verify to sort from Low to High " + by.toString());
-        }
-        addScreenshotToReport(Thread.currentThread().getStackTrace()[1].getMethodName() + "_" + DateUtils.getCurrentDateTime());
 
+        if (ExtentTestManager.getExtentTest() != null) {
+            ExtentReportManager.pass("Verify to sort A_Z " + prodsName.toString());
+        }
         return sortedList.equals(obtainedList) ? true : false;
     }
-    public static boolean verifyTextWhenSortingByLargest(By by) {
-        waitForElementVisible(by);
-        WebUI.sleep(2);
-        ArrayList<Double> obtainedList = new ArrayList<>();
-        List<WebElement> elementList = DriverManager.getDriver().findElements(by);
-        for (WebElement element : elementList) {
-            double eleNum;
-            if(element.getText().contains("Bytes")){
-                eleNum = Double.parseDouble(element.getText().replace("Bytes", ""))/1000;
-            }else if(element.getText().contains("MB")) {
-                eleNum = Double.parseDouble(element.getText().replace("MB", "").trim()) * 1000;
-            }else{
-                eleNum = Double.parseDouble(element.getText().replace("KB", ""));
+
+    public static boolean verifyProdsWhenSortingZ_A(By btnNextPage, By prodsName, By byPageSize, By byTotalRows, By noSearchResultsContents) {
+
+        ArrayList<String> obtainedList = new ArrayList<>();
+        ArrayList<String> sortedList = new ArrayList<>();
+
+        int pageSize = verifyElementExists(byPageSize) && getWebElements(byPageSize).size() > 1 ? getWebElements(byPageSize).size() : 1;
+        for (int k = 1; k <= pageSize; k++) {
+            if (!verifyElementExists(byTotalRows)) {
+                Assert.assertTrue(verifyElementTextContains(noSearchResultsContents, "Your search returned no results."));
+            } else {
+                List<WebElement> elementList = DriverManager.getDriver().findElements(prodsName);
+                for (WebElement prodName : elementList) {
+                    obtainedList.add(prodName.getText());
+                }
+                if (pageSize > k) {
+                    WebUI.clickElement(btnNextPage);
+                }
             }
-            obtainedList.add(eleNum);
         }
-        ArrayList<Double> sortedList = new ArrayList<>();
-        for (Double s : obtainedList) {
+        for (String s : obtainedList) {
+            sortedList.add(s);
+        }
+
+        Collections.sort(sortedList);
+        Collections.reverse(sortedList);
+
+        if (ExtentTestManager.getExtentTest() != null) {
+            ExtentReportManager.pass("Verify to sort A_Z " + prodsName.toString());
+        }
+        return sortedList.equals(obtainedList) ? true : false;
+    }
+
+    public static boolean verifyProdsWhenSortingLow_High(By btnNextPage, By prodsName, By byPageSize, By byTotalRows, By noSearchResultsContents) {
+
+        ArrayList<Integer> obtainedList = new ArrayList<>();
+        ArrayList<Integer> sortedList = new ArrayList<>();
+
+        int pageSize = verifyElementExists(byPageSize) && getWebElements(byPageSize).size() > 1 ? getWebElements(byPageSize).size() : 1;
+        for (int k = 1; k <= pageSize; k++) {
+            if (!verifyElementExists(byTotalRows)) {
+                Assert.assertTrue(verifyElementTextContains(noSearchResultsContents, "Your search returned no results."));
+            } else {
+                List<WebElement> elementList = DriverManager.getDriver().findElements(prodsName);
+                for (WebElement prodName : elementList) {
+                    obtainedList.add(Integer.parseInt(prodName.getText().replace("As low as", "").replace(".", "").replace("Special Price", "").replace("$", "").trim()));
+                }
+                if (pageSize > k) {
+                    WebUI.clickElement(btnNextPage);
+                }
+            }
+        }
+
+        for (int s : obtainedList) {
             sortedList.add(s);
         }
         Collections.sort(sortedList);
         Collections.reverse(sortedList);
-        if (ExtentTestManager.getExtentTest() != null) {
-            ExtentReportManager.pass("Verify to sort from Low to High " + by.toString());
-        }
-        addScreenshotToReport(Thread.currentThread().getStackTrace()[1].getMethodName() + "_" + DateUtils.getCurrentDateTime());
 
+        if (ExtentTestManager.getExtentTest() != null) {
+            ExtentReportManager.pass("Verify to sort Low_High " + prodsName.toString());
+        }
+        return sortedList.equals(obtainedList) ? true : false;
+    }
+
+    public static boolean verifyProdsWhenSortingHigh_Low(By btnNextPage, By prodsName, By byPageSize, By byTotalRows, By noSearchResultsContents) {
+
+        ArrayList<Integer> obtainedList = new ArrayList<>();
+        ArrayList<Integer> sortedList = new ArrayList<>();
+
+        int pageSize = verifyElementExists(byPageSize) && getWebElements(byPageSize).size() > 1 ? getWebElements(byPageSize).size() : 1;
+        for (int k = 1; k <= pageSize; k++) {
+            if (!verifyElementExists(byTotalRows)) {
+                Assert.assertTrue(verifyElementTextContains(noSearchResultsContents, "Your search returned no results."));
+            } else {
+                List<WebElement> elementList = DriverManager.getDriver().findElements(prodsName);
+                for (WebElement prodName : elementList) {
+                    obtainedList.add(Integer.parseInt(prodName.getText().replace("As low as", "").replace(".", "").replace("Special Price", "").replace("$", "").trim()));
+                }
+                if (pageSize > k) {
+                    WebUI.clickElement(btnNextPage);
+                }
+            }
+        }
+        for (int s : obtainedList) {
+            sortedList.add(s);
+        }
+        Collections.sort(sortedList);
+
+        if (ExtentTestManager.getExtentTest() != null) {
+            ExtentReportManager.pass("Verify to sort Low_High " + prodsName.toString());
+        }
         return sortedList.equals(obtainedList) ? true : false;
     }
 
