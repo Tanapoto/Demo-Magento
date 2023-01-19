@@ -44,20 +44,20 @@ public class AccountTest extends BaseTest {
         editAccountPage.deleteAddress(1);
     }
 
-//    @Test(priority = 3, dataProvider = "getAccountDataHashTable", dataProviderClass = AccountDataProvider.class)
-//    public void signInFailure(Hashtable<String, String> data) {
-//        accountPage.signInFailure(2);
-//    }
-//
-//    @Test(priority = 4, dataProvider = "getAccountDataHashTable", dataProviderClass = AccountDataProvider.class)
-//    public void signUpFailureWithEmptyData(Hashtable<String, String> data) {
-//        accountPage.signUpFailure(3);
-//    }
+   @Test(priority = 3, dataProvider = "getAccountDataHashTable", dataProviderClass = AccountDataProvider.class)
+   public void signInFailure(Hashtable<String, String> data) {
+       accountPage.signInFailure(2);
+   }
 
-//    @Test(priority = 5, dataProvider = "getAccountDataHashTable", dataProviderClass = AccountDataProvider.class)
-//    public void signUpFailureWithExistedData(Hashtable<String, String> data) {
-//        accountPage.signUpFailure(4);
-//    }
+   @Test(priority = 4, dataProvider = "getAccountDataHashTable", dataProviderClass = AccountDataProvider.class)
+   public void signUpFailureWithEmptyData(Hashtable<String, String> data) {
+       accountPage.signUpFailure(3);
+   }
+
+   @Test(priority = 5, dataProvider = "getAccountDataHashTable", dataProviderClass = AccountDataProvider.class)
+   public void signUpFailureWithExistedData(Hashtable<String, String> data) {
+       accountPage.signUpFailure(4);
+   }
 
 }
 
